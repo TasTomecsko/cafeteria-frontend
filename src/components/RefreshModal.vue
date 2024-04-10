@@ -1,6 +1,8 @@
 <script lang="ts" setup>
     import { useAuthStore } from '@/stores/auth';
     import { useUserInfoStore } from '@/stores/userInfo';
+    import Button from '@/assets/Button.vue';
+    import { buttonType } from '@/enums/buttonTypes';
 
     const auth = useAuthStore();
     const userInfo = useUserInfoStore();
@@ -24,7 +26,7 @@
         <div class="modal-body">
             <h1>Your access to this site will soon expire!</h1>
             <div class="button-holder">
-                <button @click.stop="onButtonClick" class="modal-btn">Stay logged in</button>
+                <Button @clicked="onButtonClick" :text="'Stay logged in'" :assigned-type="buttonType.RED" class="modal-btn"/>
             </div>
         </div>
     </div>
@@ -55,14 +57,6 @@
         text-align: center;
     }
     .modal-btn {
-        height: 30px;
         width: 50%;
-        font-size: 15px;
-        border: 2px solid rgb(230, 0, 0);
-        border-radius: 5px;
-        background-color: white;
-    }
-    .modal-btn:hover {
-        background-color: rgb(230, 0, 0);
     }
 </style>

@@ -1,14 +1,18 @@
 <script lang="ts" setup>
-import { computed, ref, reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useMenuStore } from '@/stores/menuStore';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import router from '@/router';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const menu = useMenuStore();
 const note = useNotificationStore();
 const editMode = ref(false);
+const language = useLanguageStore();
 
 const timeDetails = reactive({
     selectionStart: '',
@@ -45,51 +49,41 @@ function onBackClick() {
     router.push('/menu');
 }
 
-const minDateComputed = computed(() => {
-    const date = new Date();
+function disable() {
+    return timeDetails.availableFrom == '' ||
+            timeDetails.availableTo == '' ||
+            timeDetails.selectionStart == '' ||
+            timeDetails.selectionEnd == '';
+}
 
-    var years = date.getFullYear().toString();
-    var months = (date.getMonth() + 1).toString();
-    var day = (date.getDate() + 1).toString();
-
-    if(months.length == 1) {
-        months = '0' + months; 
-    }
-    if(day.length == 1) {
-        day = '0' + day;
-    }
-
-    return years + '-' + months + '-' + day
-});
-
-const min = minDateComputed.value.toString();
+const min = menu.getDateOfToday();
 </script>
 
 <template>
     <div class="wrapper">
-        <h1 class="section-details">Create Menu</h1>
-        <form @submit.prevent="onSubmit">
+        <h1 class="section-details">{{ language.languageFile.menu.create.title }}</h1>
+        <form>
             <div class="grid">
                 <div>
-                    <label for="selectionStart" class="data-label">Meal selection starts at:</label><br>
+                    <label for="selectionStart" class="data-label">{{ language.languageFile.menu.create.selectionStart }}:</label><br>
                     <input type="date" id="selectionStart" v-model="timeDetails.selectionStart" :min="min"  required class="date-picker">
                 </div>
                 <div>
-                    <label for="selectionEnd" class="data-label">Meal selection ends at:</label><br>
+                    <label for="selectionEnd" class="data-label">{{ language.languageFile.menu.create.selectionEnd }}:</label><br>
                     <input type="date" id="selectionEnd" v-model="timeDetails.selectionEnd" :min="min" required class="date-picker">
                 </div>
                 <div>
-                    <label for="availabilityStart" class="data-label">Meals are available starting from:</label><br>
+                    <label for="availabilityStart" class="data-label">{{ language.languageFile.menu.create.availableStart }}:</label><br>
                     <input type="date" id="availabilityStart" v-model="timeDetails.availableFrom" :min="min" required class="date-picker">
                 </div>
                 <div>
-                    <label for="availabilityEnd" class="data-label">Meal are available to:</label><br>
+                    <label for="availabilityEnd" class="data-label">{{ language.languageFile.menu.create.availableTo }}:</label><br>
                     <input type="date" id="availabilityEnd" v-model="timeDetails.availableTo" :min="min" required class="date-picker">
                 </div>
             </div>
-            <button class="edit-button" type="submit">Create Menu</button>
+            <Button @clicked="onSubmit" :text="language.languageFile.menu.create.createButton" :assigned-type="buttonType.GREEN" :is-disabled="disable()"/>
         </form>
-        <button class="back-button" @click.prevent="onBackClick">Cancel</button>
+        <Button @clicked="onBackClick" :text="language.languageFile.menu.create.cancelButton" :assigned-type="buttonType.RED"/>
     </div>
 </template>
 
@@ -124,30 +118,6 @@ form {
     margin-bottom: 15px;
     width: 200px;
     height: 20px;
-}
-.edit-button {
-    height: 30px;
-    width: 125px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 2px solid rgb(0, 160, 0);
-    border-radius: 5px;
-    background-color: white;
-}
-.edit-button:hover {
-    background-color: rgb(0, 160, 0);
-}
-.back-button {
-    height: 30px;
-    width: 100px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 2px solid rgb(230, 0, 0);
-    border-radius: 5px;
-    background-color: white;
-}
-.back-button:hover {
-    background-color: rgb(230, 0, 0);
 }
 
 @media screen and (min-width: 700px) {

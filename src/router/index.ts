@@ -31,6 +31,11 @@ const router = createRouter({
           name: 'orderCreate',
           component: () => import('@/components/Meal/SelectableMenuMealsList.vue'),
           props: true
+        },
+        {
+          path: 'ordered-meal',
+          name: 'todaysMeal',
+          component: () => import('@/components/Meal/TodaysMeal.vue')
         }
       ]
     },
@@ -62,13 +67,19 @@ const router = createRouter({
         {
           path: 'inspect/:id',
           name: 'menuInspect',
-          component: () => import('@/components/Menu/MenuInspect.vue'),
+          component: () => import('@/components/Menu/Inspect/MenuInspect.vue'),
           props: true
         },
         {
           path: 'create',
           name: 'menuCreate',
-          component: () => import('@/components/Menu/CreateMenu.vue')
+          component: () => import('@/components/Menu/Create/CreateMenu.vue')
+        },
+        {
+          path: 'inspect/:id/order',
+          name: 'menuOrders',
+          component: () => import('@/components/Menu/Orders/MenuOrdersList.vue'),
+          props: true
         }
       ]
     }

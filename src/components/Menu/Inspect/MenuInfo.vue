@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useMenuStore } from '@/stores/menuStore';
+import { convertMillisToDate } from '@/functions/timeFunctions';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const menu = useMenuStore();
+const language = useLanguageStore();
 
 const selectionStartDate = computed(() => {
     return convertMillisToDate(menu.menu.selectionStart);
@@ -20,43 +23,28 @@ const availabilityEndDate = computed(() => {
     return convertMillisToDate(menu.menu.availableTo);
 });
 
-function convertMillisToDate(milliseconds: number) {
-    var converted_year = new Date(milliseconds).getFullYear().toString();
-    var converted_month = (new Date(milliseconds).getMonth() + 1).toString();
-    var converted_day = new Date(milliseconds).getDate().toString();
-
-    if(converted_month.length == 1) {
-        converted_month = '0' + converted_month; 
-    }
-    if(converted_day.length == 1) {
-        converted_day = '0' + converted_day;
-    }
-
-    return converted_year + '.' + converted_month + '.' + converted_day + '.';
-}
-
 const props = defineProps([
     'id'
 ]);
 </script>
 
 <template>
-    <h1 class="section-details">Menu {{ props.id }} Details</h1>
+    <h1 class="section-details">{{ language.languageFile.menu.inspect.menuInfo.title.replace("$id", props.id) }}</h1>
     <div class="grid">
         <div>
-            <p class="data-type">Meal selection starts at:</p>
+            <p class="data-type">{{ language.languageFile.menu.inspect.menuInfo.selectionStart }}:</p>
             <p class="data-date">{{ selectionStartDate }}</p>
         </div>
         <div>
-            <p class="data-type">Meal selection ends at:</p>
+            <p class="data-type">{{ language.languageFile.menu.inspect.menuInfo.selectionEnd }}:</p>
             <p class="data-date">{{ selectionEndDate }}</p>
         </div>
         <div>
-            <p class="data-type">Meals are available starting from:</p>
+            <p class="data-type">{{ language.languageFile.menu.inspect.menuInfo.availableStart }}:</p>
             <p class="data-date">{{ availabilityStartDate }}</p>
         </div>
         <div>
-            <p class="data-type">Meal are available to:</p>
+            <p class="data-type">{{ language.languageFile.menu.inspect.menuInfo.availableTo }}:</p>
             <p class="data-date">{{ availabilityEndDate }}</p>
         </div>
     </div>

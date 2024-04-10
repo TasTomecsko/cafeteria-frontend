@@ -4,17 +4,21 @@ import { useAuthStore } from '@/stores/auth';
 import { useMenuStore } from '@/stores/menuStore';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import router from '@/router';
-import EditMenu from './EditMenu.vue';
-import MenuInfo from './MenuInfo.vue';
-import MenuMealList from './MenuMealList.vue';
+import EditMenu from '@/components/Menu/Inspect/EditMenu.vue';
+import MenuInfo from '@/components/Menu/Inspect/MenuInfo.vue';
+import MenuMealList from '@/components/Menu/Inspect/MenuMealList.vue';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const menu = useMenuStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 const editMode = ref(false);
 
 const props = defineProps([
-    'id',
+    'id'
 ]);
 
 function errorConnect() {
@@ -46,24 +50,29 @@ function onCancelClick() {
 function onBackClick() {
     router.push('/menu');
 }
+
+function onOrdersClick() {
+    router.push(`/menu/inspect/${props.id}/order`)
+}
 </script>
 
 <template>
     <div class="menu-holder">
         <div class="menu-time-details" v-if="editMode == false">
             <MenuInfo :id="props.id"/>
-            <button class="edit-button" @click.prevent="onEditClick">Edit</button>
+            <Button @clicked="onEditClick" :text="language.languageFile.menu.inspect.menuInfo.editButton" :assigned-type="buttonType.GREEN" v-if="menu.menu.selectionStart > new Date().getTime()"/>
+            <Button @clicked="onOrdersClick" :text="language.languageFile.menu.inspect.menuInfo.orderButton" :assigned-type="buttonType.BLUE" v-if="menu.menu.selectionStart < new Date().getTime()"/>
         </div>
         <div class="menu-time-details" v-else>
             <EditMenu :id="props.id"/>
-            <button class="cancel-button" @click.prevent="onCancelClick">Cancel</button>
+            <Button @clicked="onCancelClick" :text="language.languageFile.menu.inspect.cancelButton" :assigned-type="buttonType.RED" v-if="menu.menu.selectionStart > new Date().getTime()"/>
         </div>
         <div class="menu-meals-details">
             <MenuMealList :menu-id="props.id"/>
         </div>
     </div>
     <div class="back-button-holder">
-        <button class="back-button" @click.prevent="onBackClick">Back</button>
+        <Button @clicked="onBackClick" :text="language.languageFile.menu.inspect.backButton" :assigned-type="buttonType.RED" class="back-button"/>
     </div>
 </template>
 
@@ -76,7 +85,7 @@ function onBackClick() {
         text-align: center;
     }
     .menu-meals-details {
-        background-color: white;
+        background-color: rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         margin: 15px;
         padding: 10px;
@@ -87,39 +96,8 @@ function onBackClick() {
         margin-right: 15px;
     }
     .back-button {
-        height: 30px;
         width: 100px;
-        font-size: 14px;
-        font-weight: 600;
-        border: 2px solid rgb(230, 0, 0);
-        border-radius: 5px;
-    }
-    .back-button:hover {
-        background-color: rgb(230, 0, 0);
-    }
-    .cancel-button {
-        height: 30px;
-        width: 125px;
-        font-size: 14px;
-        font-weight: 600;
-        border: 2px solid rgb(230, 0, 0);
-        background-color: white;
-        border-radius: 5px;
-    }
-    .cancel-button:hover {
-        background-color: rgb(230, 0, 0);
-    }
-    .edit-button {
-        height: 30px;
-        width: 125px;
-        font-size: 14px;
-        font-weight: 600;
-        border: 2px solid rgb(0, 160, 0);
-        border-radius: 5px;
-        background-color: white;
-    }
-    .edit-button:hover {
-        background-color: rgb(0, 160, 0);
+        background-color: whitesmoke;
     }
 
     @media screen and (min-width: 700px) {

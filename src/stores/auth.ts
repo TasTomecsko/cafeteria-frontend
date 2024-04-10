@@ -13,7 +13,7 @@ export const useAuthStore = defineStore({
             token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')!) : null,
             refreshToken: localStorage.getItem('refreshToken') ? JSON.parse(localStorage.getItem('refreshToken')!) : null,
             showModal: false,
-            loading: false,
+            loading: false
         }
     },
     actions: {

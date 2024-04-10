@@ -3,10 +3,12 @@ import { useAuthStore } from '@/stores/auth';
 import { useHomeStore } from '@/stores/home';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import { onMounted } from 'vue';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const home = useHomeStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 
 onMounted(async () => {
     await home.getUser(auth.token).catch(function(error) {
@@ -22,18 +24,18 @@ onMounted(async () => {
 
 <template>
     <div class="user-information-wrapper">
-        <h1 class="user-information-title">User Information</h1>
+        <h1 class="user-information-title">{{ language.languageFile.home.userInformation.title }}</h1>
         <div class="user-information-holder">
             <div class="information">
-                <p class="data-name">First Name:</p>
+                <p class="data-name">{{ language.languageFile.home.userInformation.firstName }}:</p>
                 <p class="data">{{ home.userData.firstName }}</p>
             </div>
             <div class="information">
-                <p class="data-name">Last Name:</p>
+                <p class="data-name">{{ language.languageFile.home.userInformation.lastName }}:</p>
                 <p class="data">{{ home.userData.lastName }}</p>
             </div>
             <div class="information">
-                <p class="data-name">Email:</p>
+                <p class="data-name">{{ language.languageFile.home.userInformation.email }}:</p>
                 <p class="data">{{ home.userData.email }}</p>
             </div>
         </div>
@@ -52,7 +54,6 @@ onMounted(async () => {
     .user-information-wrapper {
         background-color: white;
         padding: 10px;
-        /*margin-bottom: 15px;*/
         text-align: left;
     }
     .user-information-title {

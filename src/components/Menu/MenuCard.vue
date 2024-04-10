@@ -1,14 +1,20 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useMenuStore } from '@/stores/menuStore';
 import { useAuthStore } from '@/stores/auth';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import router from '@/router';
-
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { convertMillisToDate } from '@/functions/timeFunctions';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const menu = useMenuStore();
 const auth = useAuthStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
+
+const showModal = ref(false);
 
 const props = defineProps([
     'menuId',
@@ -35,19 +41,12 @@ const availabilityEnd = computed(() => {
     return convertMillisToDate(props.availabilityEndDate);
 });
 
-function convertMillisToDate(milliseconds: number) {
-    var converted_year = new Date(milliseconds).getFullYear().toString();
-    var converted_month = (new Date(milliseconds).getMonth() + 1).toString();
-    var converted_day = new Date(milliseconds).getDate().toString();
+function openModal() {
+    showModal.value = true;
+}
 
-    if(converted_month.length == 1) {
-        converted_month = '0' + converted_month; 
-    }
-    if(converted_day.length == 1) {
-        converted_day = '0' + converted_day;
-    }
-    
-    return converted_year + '.' + converted_month + '.' + converted_day + '.';
+function closeModal() {
+    showModal.value = false;
 }
 
 async function deleteMenu() {
@@ -66,6 +65,8 @@ async function deleteMenu() {
         }
     });
 
+    showModal.value = false;
+
     if(Number(ableToDelete) - Number(true) == 0) {
         menu.menus.splice(props.cardNumber, 1);
     }
@@ -77,36 +78,71 @@ function inspectMenu() {
 </script>
 
 <template>
+    <div class="modal-wrapper" v-if="showModal">
+        <div class="modal-body">
+            <h1 class="warning">{{ language.languageFile.menu.menuList.modal.text.replace("$id", props.menuId) }}</h1>
+            <div class="modal-button-holder">
+                <div><Button @clicked="deleteMenu" :text="language.languageFile.menu.menuList.modal.deleteButton" :assigned-type="buttonType.RED"/></div>
+                <div><Button @clicked="closeModal" :text="language.languageFile.menu.menuList.modal.cancelButton" :assigned-type="buttonType.RED"/></div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div>
-            <h1 class="card-name">Menu {{ menuId }}</h1>
+            <h1 class="card-name">{{ language.languageFile.menu.menuList.title.replace("$id", props.menuId) }}</h1>
         </div>
         <div class="card-body">
             <div>
-                <p class="data-type">Meal selection starts at:</p>
+                <p class="data-type">{{ language.languageFile.menu.menuList.selectionStart }}:</p>
                 <p class="data-date">{{ selectionStart }}</p>
             </div>
             <div>
-                <p class="data-type">Meal selection ands at:</p>
+                <p class="data-type">{{ language.languageFile.menu.menuList.selectionEnd }}:</p>
                 <p class="data-date">{{ selectionEnd }}</p>
             </div>
             <div>
-                <p class="data-type">Meals are available starting from:</p>
+                <p class="data-type">{{ language.languageFile.menu.menuList.availableStart }}:</p>
                 <p class="data-date">{{ availabilityStart }}</p>
             </div>
             <div>
-                <p class="data-type">Meal are available to:</p>
+                <p class="data-type">{{ language.languageFile.menu.menuList.availableTo }}:</p>
                 <p class="data-date">{{ availabilityEnd }}</p>
             </div>
         </div>
-        <div class="card-footer">
-            <button class="inspect-button" @click.prevent="inspectMenu">Inspect</button>
-            <button class="delete-button" @click.prevent="deleteMenu">Delete</button>
+        <div :class="{'card-footer': new Date().getTime() < props.selectionStartDate, 'card-footer-single': new Date().getTime() > props.selectionStartDate}">
+            <Button @clicked="inspectMenu" :text="language.languageFile.menu.menuList.inspectButton" :assigned-type="buttonType.BLUE"/>
+            <Button @clicked="openModal" :text="language.languageFile.menu.menuList.deleteButton" :assigned-type="buttonType.RED" 
+                v-if="new Date().getTime() < props.selectionStartDate"/>
         </div>
     </div>
 </template>
 
 <style scoped>
+    .modal-wrapper {
+        position: fixed;
+        z-index: 9997;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-body {
+        width: 350px;
+        margin: 150px auto;
+        padding: 20px 30px;
+        background-color: white;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .warning {
+        font-size: 25px;
+    }
+    .modal-button-holder {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        text-align: center;
+    }
     .card {
         background-color: white;
         border-radius: 10px;
@@ -125,6 +161,11 @@ function inspectMenu() {
         display: grid;
         grid-template-columns: 50% 50%;
     }
+    .card-footer-single {
+        margin-top: 5px;
+        display: grid;
+        grid-template-columns: 100%;
+    }
     .data-type {
         font-size: 20px;
         margin-top: 15px;
@@ -141,31 +182,7 @@ function inspectMenu() {
     p {
         margin: 0;
     }
-
     button {
-        width: 100px;
         justify-self: end;
-        font-size: 16px;
-        height: 30px;
-        border: none;
-    }
-    .delete-button {
-        background-color: white;
-        border: 2px solid rgb(230, 0, 0);
-        border-radius: 5px;
-        font-weight: 400;
-    }
-    .delete-button:hover {
-        background-color: rgb(230, 0, 0);
-    }
-
-    .inspect-button {
-        background-color: white;
-        border: 2px solid rgb(0, 175, 255);
-        border-radius: 5px;
-        font-weight: 400;
-    }
-    .inspect-button:hover {
-        background-color: rgb(0, 175, 255);
     }
 </style>

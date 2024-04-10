@@ -1,5 +1,6 @@
 export interface Meal {
     mealId: number,
     identification: string,
-    description: string
+    description: string,
+    dayOfMeal: number
 }

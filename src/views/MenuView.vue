@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import HeadBar from '@/components/HeadBar.vue';
+import { useLanguageStore } from '@/stores/languageStore';
+
+const language = useLanguageStore();
 </script>
 
 <template>
     <HeadBar/>
     <div class="wrapper">
         <div class="user-view-header">
-            <h1 class="page-title">Menu</h1>
+            <h1 class="page-title">{{ language.languageFile.menu.menu }}</h1>
         </div>
         <div class="page-content">
             <RouterView/>

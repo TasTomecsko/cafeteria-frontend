@@ -3,10 +3,14 @@ import { useAuthStore } from '@/stores/auth';
 import { useHomeStore } from '@/stores/home';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import { reactive } from 'vue';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const home = useHomeStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 
 var isLoading = false;
 
@@ -51,32 +55,50 @@ function onCancel() {
     user.oldPassword = '';
     user.newPassword  = '';
 }
+
+function disable() {
+    return user.firstName == '' ||
+            user.lastName == '' || 
+            user.oldPassword == '' ||
+            user.newPassword == '';
+}
+
+function canCancel() {
+    if(user.firstName != '' || user.lastName != '' || user.oldPassword != '' ||user.newPassword != '') {
+        return false;
+    }
+    else {
+        return true
+    }
+}
 </script>
 
 <template>
-    <form class="form" @submit.prevent="onSubmit">
+    <form class="form">
         <div class="form-name">
-            <h1 class="form-name-text">Update User Details</h1>
+            <h1 class="form-name-text">{{ language.languageFile.home.userInformationUpdate.title }}</h1>
         </div>
         <div class="input-holder">
-            <label class="label" for="firstName">First Name:</label><br>
+            <label class="label" for="firstName">{{ language.languageFile.home.userInformationUpdate.firstName }}:</label><br>
             <input class="input" type="text" id="firstName" :placeholder="home.userData.firstName" v-model="user.firstName" required :disabled="isLoading">
         </div>
         <div class="input-holder">
-            <label class="label" for="lastName">Last Name:</label><br>
+            <label class="label" for="lastName">{{ language.languageFile.home.userInformationUpdate.lastName }}:</label><br>
             <input class="input" type="text" id="lastName" :placeholder="home.userData.lastName" v-model="user.lastName" required :disabled="isLoading">
         </div>
         <div class="input-holder">
-            <label class="label" for="oldPassword">Old Password:</label><br>
-            <input class="input" type="text" id="oldPassword" placeholder="oldpassword123" v-model="user.oldPassword" required :disabled="isLoading">
+            <label class="label" for="oldPassword">{{ language.languageFile.home.userInformationUpdate.oldPass }}:</label><br>
+            <input class="input" type="text" id="oldPassword" placeholder="12345" v-model="user.oldPassword" required :disabled="isLoading">
         </div>
         <div class="input-holder">
-            <label class="label" for="newPassword">New Password: </label><br>
-            <input class="input" type="text" id="newPassword" placeholder="newpassword456" v-model="user.newPassword" required :disabled="isLoading">
+            <label class="label" for="newPassword">{{ language.languageFile.home.userInformationUpdate.newPass }}:</label><br>
+            <input class="input" type="text" id="newPassword" placeholder="67890" v-model="user.newPassword" required :disabled="isLoading">
         </div>
         <div class="button-holder">
-            <button type="submit" class="create-button" :disabled="isLoading">Edit</button>
-            <button type="button" class="cancel-button" @click.prevent="onCancel" :disabled="isLoading">Cancel</button>
+            <Button @clicked="onSubmit" :text="language.languageFile.home.userInformationUpdate.editButton" 
+            :assigned-type="buttonType.GREEN" :is-disabled="disable() || isLoading" class="edit-button"/>
+            <Button @clicked="onCancel" :text="language.languageFile.home.userInformationUpdate.cancelButton" 
+            :assigned-type="buttonType.RED" :is-disabled="canCancel() || isLoading" class="cancel-button"/>
         </div>
     </form>
 </template>
@@ -122,32 +144,12 @@ h1 {
     margin-top: 25px;
 }
 
-.create-button {
-    height: 40px;
-    width: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    border: 2px solid rgb(0, 160, 0);
-    background-color: white;
-    border-radius: 5px;
+.edit-button {
     margin-right: 40px;
-}
-.create-button:hover {
-    background-color: rgb(0, 160, 0);
 }
 
 .cancel-button {
-    height: 40px;
-    width: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    border: 2px solid rgb(230, 0, 0);
-    background-color: white;
-    border-radius: 5px;
     margin-left: 20px;
-}
-.cancel-button:hover {
-    background-color: rgb(230, 0, 0);
 }
 
 @media screen and (min-width: 600px) {

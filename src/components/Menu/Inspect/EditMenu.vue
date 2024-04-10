@@ -3,10 +3,14 @@ import { computed, ref, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useMenuStore } from '@/stores/menuStore';
 import { useNotificationStore } from '@/stores/notificationsStore';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const menu = useMenuStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 const editMode = ref(false);
 
 const timeDetails = reactive({
@@ -51,52 +55,47 @@ async function onSubmit() {
     editMode.value = false;
 }
 
-const minDateComputed = computed(() => {
-    const date = new Date();
+function disable() {
+    return timeDetails.availableFrom == '' ||
+            timeDetails.availableTo == '' ||
+            timeDetails.selectionStart == '' ||
+            timeDetails.selectionEnd == '';
+}
 
-    var years = date.getFullYear().toString();
-    var months = (date.getMonth() + 1).toString();
-    var day = (date.getDate() + 1).toString();
-
-    if(months.length == 1) {
-        months = '0' + months; 
-    }
-    if(day.length == 1) {
-        day = '0' + day;
-    }
-
-    return years + '-' + months + '-' + day
-});
-
-const min = minDateComputed.value.toString();
+const min = menu.getDateOfToday();
 </script>
 
 <template>
-    <h1 class="section-details">Edit Menu {{ props.id }}</h1>
-    <form @submit.prevent="onSubmit">
+    <h1 class="section-details">{{ language.languageFile.menu.inspect.menuEdit.title.replace("$id", props.id) }}</h1>
+    <form>
         <div class="grid">
             <div>
-                <p class="current-date">Currently set to: {{ new Date(menu.menu.selectionStart - new Date(menu.menu.selectionStart).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
-                <label for="selectionStart" class="data-label">Meal selection starts at:</label><br>
+                <p class="current-date">{{ language.languageFile.menu.inspect.menuEdit.currentlySetTo }}: 
+                    {{ new Date(menu.menu.selectionStart - new Date(menu.menu.selectionStart).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
+                <label for="selectionStart" class="data-label">{{ language.languageFile.menu.inspect.menuEdit.selectionStart }}:</label><br>
                 <input type="date" id="selectionStart" v-model="timeDetails.selectionStart" :min="min"  required class="date-picker"><br>
             </div>
             <div>
-                <p class="current-date">Currently set to: {{ new Date(menu.menu.selectionEnd - new Date(menu.menu.selectionEnd).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
-                <label for="selectionEnd" class="data-label">Meal selection ends at:</label><br>
+                <p class="current-date">{{ language.languageFile.menu.inspect.menuEdit.currentlySetTo }}: 
+                    {{ new Date(menu.menu.selectionEnd - new Date(menu.menu.selectionEnd).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
+                <label for="selectionEnd" class="data-label">{{ language.languageFile.menu.inspect.menuEdit.selectionEnd }}:</label><br>
                 <input type="date" id="selectionEnd" v-model="timeDetails.selectionEnd" :min="min" required class="date-picker"><br>
             </div>
             <div>
-                <p class="current-date">Currently set to: {{ new Date(menu.menu.availableFrom - new Date(menu.menu.availableFrom).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
-                <label for="availabilityStart" class="data-label">Meals are available starting from:</label><br>
+                <p class="current-date">{{ language.languageFile.menu.inspect.menuEdit.currentlySetTo }}: 
+                    {{ new Date(menu.menu.availableFrom - new Date(menu.menu.availableFrom).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
+                <label for="availabilityStart" class="data-label">{{ language.languageFile.menu.inspect.menuEdit.availableStart }}:</label><br>
                 <input type="date" id="availabilityStart" v-model="timeDetails.availableFrom" :min="min" required class="date-picker"><br>
             </div>
             <div>
-                <p class="current-date">Currently set to: {{ new Date(menu.menu.availableTo - new Date(menu.menu.availableTo).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
-                <label for="availabilityEnd" class="data-label">Meal are available to:</label><br>
+                <p class="current-date">{{ language.languageFile.menu.inspect.menuEdit.currentlySetTo }}: 
+                    {{ new Date(menu.menu.availableTo - new Date(menu.menu.availableTo).getTimezoneOffset() * 60 * 1000).toISOString().slice(0,10) }}</p>
+                <label for="availabilityEnd" class="data-label">{{ language.languageFile.menu.inspect.menuEdit.availableTo }}:</label><br>
                 <input type="date" id="availabilityEnd" v-model="timeDetails.availableTo" :min="min" required class="date-picker"><br>
             </div>
         </div>
-        <button class="edit-button" type="submit">Edit Time Details</button>
+        <Button class="edit-button" @clicked="onSubmit" :text="language.languageFile.menu.inspect.menuEdit.editButton" :assigned-type="buttonType.GREEN"
+            :is-disabled="disable()" v-if="menu.menu.selectionStart > new Date().getTime()"/>
     </form>
 </template>
 
@@ -132,16 +131,7 @@ form {
     font-size: 16px;
 }
 .edit-button {
-    height: 30px;
-    width: 150px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 2px solid rgb(0, 160, 0);
-    border-radius: 5px;
-    background-color: white;
-}
-.edit-button:hover {
-    background-color: rgb(0, 160, 0);
+    width: 200px;
 }
 
 @media screen and (min-width: 700px) {

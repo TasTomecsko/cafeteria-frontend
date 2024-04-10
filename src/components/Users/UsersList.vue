@@ -5,10 +5,12 @@ import { onMounted, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import UserCard from './UserCard.vue';
 import { useNotificationStore } from '@/stores/notificationsStore';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const users = useUsersStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 const userData = ref();
 
 function errorConnect() {
@@ -34,7 +36,7 @@ watch(userData, async() => {
 
 <template>
     <div class="button-holder">
-        <RouterLink to="/users/create" class="addButton"><b>ADD</b></RouterLink>
+        <RouterLink to="/users/create" class="addButton"><b>{{ language.languageFile.users.addButton }}</b></RouterLink>
     </div>
     <div class="container">
         <div class="card-holder" v-for="(user, index) in userData">
@@ -59,7 +61,7 @@ watch(userData, async() => {
 
 .addButton {
     background-color: rgb(0, 160, 0);
-    padding: 010px 15px 10px 15px;
+    padding: 10px 15px 10px 15px;
     border-radius: 15px;
 }
 

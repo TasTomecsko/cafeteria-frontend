@@ -1,0 +1,156 @@
+{
+    "login": {
+        "login": "Bejelentkezés",
+        "email": {
+            "label": "Email cím",
+            "example": "pelda.elemer@email.xyz"
+        },
+        "password": {
+            "label": "Jelszó",
+            "example": "Jelszo123"
+        },
+        "buttonText": "Bejelentkezés",
+        "errorMessages": {
+            "serverError": "A szerver nem elérhető",
+            "badCredentials": "Hibás felhasználói adatok"
+        }
+    },
+    "nav": {
+        "home": "Főmenü",
+        "meals": "Ételek",
+        "menus": "Menük",
+        "users": "Felhasználók"
+    },
+    "home": {
+        "home": "Főmenü",
+        "userInformation": {
+            "title": "Felhaszálói adatok",
+            "firstName": "Keresztnév",
+            "lastName": "Vezetéknév",
+            "email": "Email cím"
+        },
+        "userInformationUpdate": {
+            "title":"Felhaszálói adatok frissítése",
+            "firstName": "Keresztnév",
+            "lastName": "Vezetéknév",
+            "oldPass": "Régi jelszó",
+            "newPass": "Új jelszó",
+            "editButton": "Módosítás",
+            "cancelButton": "Mégse"
+        }
+    },
+    "meal": {
+        "meal": "Ételek",
+        "awailableMenus": {
+            "title": "Elérhető menük",
+            "selectionStart": "Ételek kiválasztásának kezdete",
+            "selectionEnd": "Ételek kiválasztásának vége",
+            "menu": "Menü $id",
+            "mealButton": "Napi étel"
+        },
+        "mealSelection": {
+            "title": "Menü $id ételei",
+            "day": "Ételek $day-án",
+            "placeOrder": "Rendelés leadása",
+            "backButton": "Vissza"
+        },
+        "todaysMeal": {
+            "message": "Erre a napra nem rendeltél semmit!",
+            "backButton": "Vissza"
+        }
+    },
+    "menu": {
+        "menu": "Menük",
+        "menuList": {
+            "title": "Menü $id",
+            "addButton": "Hozzáad",
+            "selectionStart": "Ételek kiválasztásának kezdete",
+            "selectionEnd": "Ételek kiválasztásának vége",
+            "availableStart": "Ételek elérhetőségének kezdete",
+            "availableTo": "Ételek elérhetőségének vége",
+            "inspectButton": "Részletek",
+            "deleteButton": "Törlés",
+            "modal": {
+                "text": "Biztosan törölni szeretnéd a $id számú Menüt?",
+                "deleteButton": "Törlés",
+                "cancelButton": "Mégse"
+            }
+        },
+        "create": {
+            "title": "Menü létrehozása",
+            "selectionStart": "Ételek kiválasztásának kezdete",
+            "selectionEnd": "Ételek kiválasztásának vége",
+            "availableStart": "Ételek elérhetőségének kezdete",
+            "availableTo": "Ételek elérhetőségének vége",
+            "createButton": "Menü létrehozása",
+            "cancelButton": "Mégse"
+        },
+        "inspect": {
+            "menuInfo": {
+                "title": "A(z) $id. számú Menü adatai",
+                "selectionStart": "Ételek kiválasztásának kezdete",
+                "selectionEnd": "Ételek kiválasztásának vége",
+                "availableStart": "Ételek elérhetőségének kezdete",
+                "availableTo": "Ételek elérhetőségének vége",
+                "orderButton": "Rendelések",
+                "editButton": "Szerkesztés"
+            },
+            "menuEdit": {
+                "title": "A $id-es Menü szerkesztése",
+                "selectionStart": "Ételek kiválasztásának kezdete",
+                "selectionEnd": "Ételek kiválasztásának vége",
+                "availableStart": "Ételek elérhetőségének kezdete",
+                "availableTo": "Ételek elérhetőségének vége",
+                "currentlySetTo": "Jelenlegi dátum",
+                "editButton": "Időszak szerkeztése"
+            },
+            "mealDetails": {
+                "title": "Étel adatok",
+                "deleteButton": "Törlés",
+                "modalDelete": {
+                    "text": "Bizosan törölni szeretnéd ezt az ételt: '$description'?",
+                    "deleteButton": "Törlés",
+                    "cancelButton": "Mégse"
+                },
+                "modalCreate": {
+                    "text": "Új étel hozzáadása a(z) $id. Menühöz",
+                    "identification": "Jelölés",
+                    "description": "Leírás",
+                    "dayOfMeal": "Az étkezés napja",
+                    "createButton": "Létrehoz",
+                    "cancelButton": "Mégse"
+                }
+            },
+            "orders": {
+                "title": "Rendelési adatok",
+                "orderNumber": "Mennyiség (db)",
+                "backButton": "Vissza"
+            },
+            "cancelButton": "Mégse",
+            "backButton": "Vissza"
+        }
+    },
+    "users": {
+        "users": "Felhasználók",
+        "addButton": "Hozzáad",
+        "deleteButton": "Törlés",
+        "cancelButton": "Mégse",
+        "deleteMessage": "Bizosan törölni szeretnéd '$first $last'-t?",
+        "email": "Email cím",
+        "role": "Meghatalmazás",
+        "createUser": {
+            "title": "Új felhasználó hozzáadása",
+            "firstName": "Keresztnév",
+            "lastName": "Vezetéknév",
+            "email": "Email cím",
+            "password": "Jelszó",
+            "role": "Meghatalmazás",
+            "roles": {
+                "user": "FELHASZNÁLÓ",
+                "admin": "ADMINISZTRÁTOR"
+            },
+            "createButton": "Létrehoz",
+            "cancelButton": "Mégse"
+        }
+    }
+}

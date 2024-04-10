@@ -1,12 +1,18 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { ref } from 'vue';
 import { useUsersStore } from '@/stores/users';
 import { useAuthStore } from '@/stores/auth';
 import { useNotificationStore } from '@/stores/notificationsStore';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const users = useUsersStore();
 const auth = useAuthStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
+
+const showModal = ref(false);
 
 const props = defineProps([
     'id',
@@ -16,6 +22,14 @@ const props = defineProps([
     'email',
     'role'
 ]);
+
+function openModal() {
+    showModal.value = true;
+}
+
+function closeModal() {
+    showModal.value = false;
+}
 
 async function deleteUser() {
     var ableToDelete: boolean = true
@@ -33,6 +47,8 @@ async function deleteUser() {
         }
     });
 
+    showModal.value = false;
+
     if(Number(ableToDelete) - Number(true) == 0) {
         users.users.splice(props.cardNumber, 1);
     }
@@ -40,28 +56,62 @@ async function deleteUser() {
 </script>
 
 <template>
+    <div class="modal-wrapper" v-if="showModal">
+        <div class="modal-body">
+            <h1 class="warning">{{ language.languageFile.users.deleteMessage.replace("$first", props.firstName).replace("$last", props.lastName) }}</h1>
+            <div class="modal-button-holder">
+                <div><Button @clicked="deleteUser" :text="language.languageFile.users.deleteButton" :assigned-type="buttonType.RED"/></div>
+                <div><Button @clicked="closeModal" :text="language.languageFile.users.cancelButton" :assigned-type="buttonType.RED"/></div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="name-holder">
             <h1 class="card-name">{{ firstName }}</h1>
         </div>
         <div class="card-body">
             <div class="email-holder">
-                <p class="data-type">Email address:</p>
+                <p class="data-type">{{ language.languageFile.users.email }}:</p>
                 <p class="data-email email-holder-child">{{ email }}</p>
             </div>
             <div>
-                <p class="data-type">Role:</p>
+                <p class="data-type">{{ language.languageFile.users.role }}:</p>
                 <p class="data-role">{{ role }}</p>
             </div>
         </div>
         <div class="card-footer">
             <div></div>
-            <button class="delete-button" @click.prevent="deleteUser">Delete</button>
+            <Button @clicked="openModal" :text="language.languageFile.users.deleteButton" :assigned-type="buttonType.RED"/>
         </div>
     </div>
 </template>
 
 <style scoped>
+    .modal-wrapper {
+        position: fixed;
+        z-index: 9997;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-body {
+        width: 350px;
+        margin: 150px auto;
+        padding: 20px 30px;
+        background-color: white;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .warning {
+        font-size: 25px;
+    }
+    .modal-button-holder {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        text-align: center;
+    }
     .card {
         background-color: white;
         border-radius: 10px;
@@ -106,19 +156,6 @@ async function deleteUser() {
     }
 
     button {
-        width: 100px;
         justify-self: end;
-        font-size: 16px;
-        height: 30px;
-        border: none;
-    }
-    .delete-button {
-        border: 2px solid rgb(230, 0, 0);
-        background-color: white;
-        border-radius: 5px;
-        font-weight: 400;
-    }
-    .delete-button:hover {
-        background-color: rgb(230, 0, 0);
     }
 </style>

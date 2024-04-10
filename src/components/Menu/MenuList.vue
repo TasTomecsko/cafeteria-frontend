@@ -4,10 +4,12 @@ import { useMenuStore } from '@/stores/menuStore';
 import { onMounted, ref, watch } from 'vue';
 import MenuCard from './MenuCard.vue';
 import { useNotificationStore } from '@/stores/notificationsStore';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const menu = useMenuStore();
 const note = useNotificationStore();
+const language = useLanguageStore();
 
 const menuData = ref();
 
@@ -34,7 +36,7 @@ watch(menuData, async() => {
 
 <template>
     <div class="button-holder">
-        <RouterLink to="/menu/create" class="addButton"><b>ADD</b></RouterLink>
+        <RouterLink to="/menu/create" class="addButton"><b>{{ language.languageFile.menu.menuList.addButton }}</b></RouterLink>
     </div>
     <div class="container">
         <div class="card-holder" v-for="(menuInfo, index) in menuData">

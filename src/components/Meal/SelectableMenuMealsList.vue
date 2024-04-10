@@ -1,22 +1,25 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import router from '@/router';
 import { useMealStore } from '@/stores/mealStore';
 import SelectableMenuMealCard from '@/components/Meal/SelectableMenuMealCard.vue';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { convertMillisToDate } from '@/functions/timeFunctions';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const note = useNotificationStore();
 const meal = useMealStore();
+const language = useLanguageStore();
 
 const props = defineProps([
     'id',
 ]);
 
 const selectedMeals = [] as number[]
-
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 function errorConnect() {
     auth.showModal = true;
@@ -56,31 +59,31 @@ async function onSubmit() {
 </script>
 
 <template>
-    <div class="menu-holder">
+    <div>
         <div class="menu-meals-details">
-            <h1 class="card-name">Meals form Menu {{ props.id }}</h1>
-            <form @submit.prevent="onSubmit">
-                <div v-for="dayIndex in 7">
+            <h1 class="card-name">{{ language.languageFile.meal.mealSelection.title.replace("$id", props.id) }}</h1>
+            <form>
+                <div v-for="(day, dayIndex) in meal.daysOfMeals">
                     <div>
-                        <h3>Meals for {{ days[dayIndex - 1] }}</h3>
+                        <h3>{{ language.languageFile.meal.mealSelection.day.replace("$day", convertMillisToDate(day)) }}</h3>
                     </div>
                     <fieldset class="meal-wrapper">
-                        <div v-for="mealItem in meal.mealsToSelect[dayIndex - 1]">
+                        <div v-for="mealItem in meal.mealsToSelect[dayIndex]">
                             <SelectableMenuMealCard :description="mealItem.description" :identification="mealItem.identification"/>
                             <div class="radio-button-holder">
-                                <input class="radio-button" type="radio" :name="days[dayIndex - 1]" :value="mealItem.mealId" v-model="selectedMeals[dayIndex - 1]">
+                                <input class="radio-button" type="radio" :name="day.toString()" :value="mealItem.mealId" v-model="selectedMeals[dayIndex]">
                             </div>
                         </div>
                     </fieldset>
                 </div>
                 <div class="submit-button-holder">
-                    <button class="submit-button">Place Order</button>
+                    <Button @clicked="onSubmit" :text="language.languageFile.meal.mealSelection.placeOrder" :assigned-type="buttonType.GREEN" class="order-button"/>
                 </div>
             </form>
         </div>
     </div>
     <div class="back-button-holder">
-        <button class="back-button" @click.prevent="onBackClick">Back</button>
+        <Button @clicked="onBackClick" :text="language.languageFile.meal.mealSelection.backButton" :assigned-type="buttonType.RED" class="back-button"/>
     </div>
 </template>
 
@@ -121,31 +124,15 @@ async function onSubmit() {
         margin-right: 15px;
     }
     .back-button {
-        height: 30px;
         width: 100px;
-        font-size: 14px;
-        font-weight: 600;
-        border: 2px solid rgb(230, 0, 0);
-        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0);
     }
-    .back-button:hover {
-        background-color: rgb(230, 0, 0);
+    .order-button {
+        width: 150px;
     }
     .submit-button-holder {
         text-align: center;
-    }
-    .submit-button {
-        margin-top: 15px;
-        height: 30px;
-        width: 100px;
-        font-size: 14px;
-        font-weight: 600;
-        border: 2px solid rgb(0, 160, 0);
-        border-radius: 5px;
-        background-color: white;
-    }
-    .submit-button:hover {
-        background-color: rgb(0, 160, 0);
+        margin-top: 25px;
     }
     
     @media screen and (min-width: 700px) {

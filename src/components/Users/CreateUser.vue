@@ -4,10 +4,14 @@ import { useAuthStore } from '@/stores/auth';
 import { useUsersStore } from '@/stores/users';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import router from '@/router';
+import Button from '@/assets/Button.vue';
+import { buttonType } from '@/enums/buttonTypes';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const auth = useAuthStore();
 const users = useUsersStore();
-const note = useNotificationStore()
+const note = useNotificationStore();
+const language = useLanguageStore();
 
 const user = reactive({
     firstName: '',
@@ -35,39 +39,48 @@ function onCancel() {
     router.push('/users');
 }
 
+function disable() {
+    return user.firstName == '' ||
+            user.lastName == '' ||
+            user.email == '' ||
+            user.password == '' ||
+            user.role == '';
+}
 </script>
 
 <template>
-    <form class="form" @submit.prevent="onSubmit">
+    <form class="form">
         <div class="form-name">
-            <h1>Add New User</h1>
+            <h1>{{ language.languageFile.users.createUser.title }}</h1>
         </div>
         <div class="input-holder">
-            <label class="label" for="firstName">First Name:</label><br>
+            <label class="label" for="firstName">{{ language.languageFile.users.createUser.firstName }}:</label><br>
             <input class="input" type="text" id="firstName" placeholder="John" v-model="user.firstName" required>
         </div>
         <div class="input-holder">
-            <label class="label" for="lastName">Last Name:</label><br>
+            <label class="label" for="lastName">{{ language.languageFile.users.createUser.lastName }}:</label><br>
             <input class="input" type="text" id="lastName" placeholder="Doe" v-model="user.lastName" required>
         </div>
         <div class="input-holder">
-            <label class="label" for="email">Email:</label><br>
+            <label class="label" for="email">{{ language.languageFile.users.createUser.email }}:</label><br>
             <input class="input" type="email" id="email" placeholder="john.doe@example.com" v-model="user.email" required>
         </div>
         <div class="input-holder">
-            <label class="label" for="password">Password:</label><br>
+            <label class="label" for="password">{{ language.languageFile.users.createUser.password }}:</label><br>
             <input class="input" type="text" id="password" placeholder="Password" v-model="user.password" required>
         </div>
         <div class="input-holder">
-            <label class="label" for="role">Role:</label><br>
+            <label class="label" for="role">{{ language.languageFile.users.createUser.role }}:</label><br>
             <select class="select" name="role" id="role" v-model="user.role" required>
-                <option value="0" selected>USER</option>
-                <option value="1">ADMIN</option>
+                <option value="0" selected>{{ language.languageFile.users.createUser.roles.user }}</option>
+                <option value="1">{{ language.languageFile.users.createUser.roles.admin }}</option>
             </select>
         </div>
         <div class="button-holder">
-            <button type="submit" class="create-button">Create</button>
-            <button type="button" class="cancel-button" @click.prevent="onCancel">Cancel</button>
+            <Button @clicked="onSubmit" :text="language.languageFile.users.createUser.createButton" :assigned-type="buttonType.GREEN"
+                :is-disabled="disable()"
+                class="create-button"/>
+            <Button @clicked="onCancel" :text="language.languageFile.users.createUser.cancelButton" :assigned-type="buttonType.RED" class="cancel-button"/>
         </div>
     </form>
 </template>
@@ -113,31 +126,11 @@ h1 {
 }
 
 .create-button {
-    height: 40px;
-    width: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    border: 2px solid rgb(0, 160, 0);
-    background-color: white;
-    border-radius: 5px;
     margin-right: 40px;
-}
-.create-button:hover {
-    background-color: rgb(0, 160, 0);
 }
 
 .cancel-button {
-    height: 40px;
-    width: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    border: 2px solid rgb(230, 0, 0);
-    background-color: white;
-    border-radius: 5px;
     margin-left: 20px;
-}
-.cancel-button:hover {
-    background-color: rgb(230, 0, 0);
 }
 
 @media screen and (min-width: 600px) {

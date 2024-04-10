@@ -1,0 +1,156 @@
+{
+    "login": {
+        "login": "Anmeldung",
+        "email": {
+            "label": "Email",
+            "example": "beispiel@email.xyz"
+        },
+        "password": {
+            "label": "Passwort",
+            "example": "Passwort123"
+        },
+        "buttonText": "Anmeldung",
+        "errorMessages": {
+            "serverError": "Der Server ist nicht verfügbar",
+            "badCredentials": "Falsche Benutzerdaten"
+        }
+    },
+    "nav": {
+        "home": "Hauptmenü",
+        "meals": "Lebensmittel",
+        "menus": "Menüs",
+        "users": "Benutzer"
+    },
+    "home": {
+        "home": "Hauptmenü",
+        "userInformation": {
+            "title": "Nutzerdetails",
+            "firstName": "Vorname",
+            "lastName": "Familienname",
+            "email": "E-Mail-Adresse"
+        },
+        "userInformationUpdate": {
+            "title":"Benutzerdaten aktualisieren",
+            "firstName": "Vorname",
+            "lastName": "Familienname",
+            "oldPass": "Altes Passwort",
+            "newPass": "Neues Passwort",
+            "editButton": "Änderung",
+            "cancelButton": "Stornieren"
+        }
+    },
+    "meal": {
+        "meal": "Lebensmittel",
+        "awailableMenus": {
+            "title": "Verfügbaren Menüs",
+            "selectionStart": "Startdatum der Auswahl",
+            "selectionEnd": "Enddatum der Auswahl",
+            "menu": "Menü $id",
+            "mealButton": "Mahlzeit"
+        },
+        "mealSelection": {
+            "title": "Mahlzeiten von Menü $id",
+            "day": "Mahlzeiten des Tages $day",
+            "placeOrder": "Bestellen",
+            "backButton": "Zurück"
+        },
+        "todaysMeal": {
+            "message": "Sie haben für diesen Tag noch nichts bestellt!",
+            "backButton": "Zurück"
+        }
+    },
+    "menu": {
+        "menu": "Menüs",
+        "menuList": {
+            "title": "Menü $id",
+            "addButton": "Hinzufügen",
+            "selectionStart": "Startdatum der Auswahl",
+            "selectionEnd": "Enddatum der Auswahl",
+            "availableStart": "Startdatum der Verfügbarkeit",
+            "availableTo": "Enddatum der Verfügbarkeit",
+            "inspectButton": "Prüfen",
+            "deleteButton": "Löschen",
+            "modal": {
+                "text": "Sind Sie sicher, dass Sie Menu $id löschen möchten?",
+                "deleteButton": "Löschen",
+                "cancelButton": "Stornieren"
+            }
+        },
+        "create": {
+            "title": "Menü erstellen",
+            "selectionStart": "Startdatum der Auswahl",
+            "selectionEnd": "Enddatum der Auswahl",
+            "availableStart": "Startdatum der Verfügbarkeit",
+            "availableTo": "Enddatum der Verfügbarkeit",
+            "createButton": "Erstellen",
+            "cancelButton": "Stornieren"
+        },
+        "inspect": {
+            "menuInfo": {
+                "title": "Einzelheiten zu Menü $id",
+                "selectionStart": "Startdatum der Auswahl",
+                "selectionEnd": "Enddatum der Auswahl",
+                "availableStart": "Startdatum der Verfügbarkeit",
+                "availableTo": "Enddatum der Verfügbarkeit",
+                "orderButton": "Aufträge",
+                "editButton": "Bearbeiten"
+            },
+            "menuEdit": {
+                "title": "Menü $id bearbeiten",
+                "selectionStart": "Startdatum der Auswahl",
+                "selectionEnd": "Enddatum der Auswahl",
+                "availableStart": "Startdatum der Verfügbarkeit",
+                "availableTo": "Enddatum der Verfügbarkeit",
+                "currentlySetTo": "Derzeit auf eingestellt",
+                "editButton": "Bearbeiten"
+            },
+            "mealDetails": {
+                "title": "Einzelheiten zu den Mahlzeiten",
+                "deleteButton": "Löschen",
+                "modalDelete": {
+                    "text": "Sind Sie sicher, dass Sie löschen möchten: '$description'?",
+                    "deleteButton": "Löschen",
+                    "cancelButton": "Stornieren"
+                },
+                "modalCreate": {
+                    "text": "Neue Mahlzeit zu Menü $id hinzufügen",
+                    "identification": "Identifikation",
+                    "description": "Beschreibung",
+                    "dayOfMeal": "Tag des Essens",
+                    "createButton": "Erstellen",
+                    "cancelButton": "Stornieren"
+                }
+            },
+            "orders": {
+                "title": "Bestelldetails",
+                "orderNumber": "Befehl (Stck)",
+                "backButton": "Zurück"
+            },
+            "cancelButton": "Stornieren",
+            "backButton": "Zurück"
+        }
+    },
+    "users": {
+        "users": "Benutzer",
+        "addButton": "Hinzufügen",
+        "deleteButton": "Löschen",
+        "cancelButton": "Stornieren",
+        "deleteMessage": "Sind Sie sicher, dass Sie '$first $last' löschen möchten?",
+        "email": "E-Mail-Adresse",
+        "role": "Rolle",
+        "createUser": {
+            "title": "Neuen Benutzer hinzufügen",
+            "firstName": "Vorname",
+            "lastName": "Familienname",
+            "email": "E-Mail-Adresse",
+            "password": "Passwort",
+            "role": "Rolle",
+            "roles": {
+                "user": "BENUTZER/IN",
+                "admin": "ADMINISTRATOR/IN"
+            },
+            "createButton": "Erstellen",
+            "cancelButton": "Stornieren"
+        }
+    }
+}

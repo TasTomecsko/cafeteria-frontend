@@ -1,20 +1,31 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useUserInfoStore } from '@/stores/userInfo';
 import { onMounted, ref, computed } from 'vue';
 import RefreshModal from '@/components/RefreshModal.vue';
 import { useNotificationStore } from '@/stores/notificationsStore';
+import { useLanguageStore } from '@/stores/languageStore';
+import NavbarDropdownButton from '@/assets/NavbarDropdownButton.vue';
+import { navIconType } from '@/enums/navIconTypes';
 
 const auth = useAuthStore();
 const userInfo = useUserInfoStore();
+const language = useLanguageStore();
 const role = ref();
 const showModal = computed(() => auth.showModal);
 const note = useNotificationStore();
+const isNavOpen = ref(false);
 
 function logout() {
     userInfo.clearUserInfoStore();
     auth.logout();
+}
+
+function navControl() {
+    if(isNavOpen.value)
+        isNavOpen.value = false
+    else
+        isNavOpen.value = true
 }
 
 onMounted(async () => {
@@ -32,57 +43,109 @@ onMounted(async () => {
 </script>
 
 <template>
-    <header>
-        <menu>
-            <div>
-                <li class="routerLink"><RouterLink class="link" to="/">Home</RouterLink></li>
-                <li class="routerLink"><RouterLink class="link" to="/meals">Meals</RouterLink></li>
-                <li class="routerLink" v-if="role == 'ADMIN'"><RouterLink class="link" to="/menu">Menu</RouterLink></li>
-                <li class="routerLink" v-if="role == 'ADMIN'"><RouterLink class="link" to="/users">Users</RouterLink></li>
+    <header class="header">
+        <menu class="menu">
+            <div class="head-element-left">
+                <div class="centerMenu">
+                    <button @click.prevent="navControl" class="openMenuButton" :class="{'openMenuButtonActive': isNavOpen === true}"></button>
+                </div>
             </div>
-            <li class="logout link"><a class="logout-link" href="#" @click="logout">Logout</a></li>
+            <div class="head-element-right">
+                <div class="centerLogout">
+                    <button @click.prevent="logout" class="logout"></button>
+                </div>
+            </div>
         </menu>
     </header>
+    <div v-if="isNavOpen" class="navigation" :class="{'navigation-smaller': role === 'USER'}">
+        <NavbarDropdownButton :nevigate-to="'/'" :button-text="language.languageFile.nav.home" :nav-menu-icon-type="navIconType.HOME"/>
+        <NavbarDropdownButton :nevigate-to="'/meals'" :button-text="language.languageFile.nav.meals" :nav-menu-icon-type="navIconType.MEALS"/>
+        <NavbarDropdownButton :nevigate-to="'/menu'" :button-text="language.languageFile.nav.menus" :nav-menu-icon-type="navIconType.MENUS" v-if="role === 'ADMIN'"/>
+        <NavbarDropdownButton :nevigate-to="'/users'" :button-text="language.languageFile.nav.users" :nav-menu-icon-type="navIconType.USERS" v-if="role === 'ADMIN'"/>
+    </div>
     <RefreshModal v-if="showModal" />
 </template>
 
 <style scoped>
-    header {
-        background-color:rgb(255, 255, 255);
-        height: 55px;
-    }
-    menu {
-        margin: 0;
-        padding: 15px 20px;
-        display: grid;
-        grid-template-columns: 90% 10%;
-    }
-    li {
-        display: inline;
-        margin-right: 15px;
-    }
-    .link {
-        font-size: 20px;
-        color: black;
-    }
-    a {
-        text-decoration: none;
-        background-color: rgb(255, 255, 255);
-        padding: 8px;
-        border-radius: 10px;
-    }
-    .link:hover {
-        background-color: rgb(211, 211, 211);
-    }
-    .logout {
-        justify-self: end;
-        margin: 0;
-    }
-    .logout-link {
-        color: white;
-        background-color: rgb(230, 0, 0);
-    }
-    .logout-link:hover {
-        background-color: rgb(250, 0, 0);
-    }
-</style>./Notifications/Notifications.vue
+.header {
+    background-color:rgb(0, 174, 255);
+    height: 55px;
+}
+.menu {
+    margin: 0;
+    height: 55px;
+    padding: 0 20px;
+}
+.logout {
+    background-color: rgb(255, 0, 0);
+    border: 1px solid rgb(255, 0, 0);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: .5s;
+    background-image: url('@/assets/images/NavBar/Logout.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+    height: 25px;
+    width: 75px;
+    padding: 14px 12px 14px 12px;
+}
+.logout:hover {
+    background-color: rgb(220, 0, 0);
+    transition: .5s;
+}
+.head-element-left {
+    float: left;
+    height: 55px;
+    width: 150px;
+}
+.head-element-right {
+    float: right;
+    height: 55px;
+    width: 150px;
+}
+.openMenuButton {
+    background-image: url('@/assets/images/NavBar/NavBarMenu.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    height: 25px;
+    width: 35px;
+    background-color: rgba(0, 0, 0, 0);
+}
+.openMenuButton:hover {
+    background-image: url('@/assets/images/NavBar/NavBarMenuHover.svg');
+}
+.openMenuButtonActive {
+    background-image: url('@/assets/images/NavBar/NavBarMenuActive.svg');
+}
+.openMenuButtonActive:hover {
+    background-image: url('@/assets/images/NavBar/NavBarMenuActiveHover.svg');
+}
+.navigation {
+    position: absolute;
+    z-index: 9996;
+    top: 55px;
+    left: 0;
+    width: 200px;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    padding: 20px 15px 10px 15px;
+    display: grid;
+    row-gap: 15px;
+    grid-template-rows: 50px 50px 50px 50px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.navigation-smaller {
+    height: 115px;
+}
+.centerMenu {
+    margin: calc((55px - 25px) / 2) 0;/* Calculated from the height of openMenuButton */
+}
+.centerLogout {
+    margin: calc((55px - 30px) / 2) 0;
+    text-align: end;
+}
+</style>

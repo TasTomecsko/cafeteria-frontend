@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import router from '@/router';
+import { convertMillisToDate } from '@/functions/timeFunctions';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const props = defineProps([
     'menuId',
     'selectionStartDate',
     'selectionEndDate'
 ]);
+
+const language = useLanguageStore();
 
 const selectionStart = computed(() => {
     return convertMillisToDate(props.selectionStartDate);
@@ -16,21 +20,6 @@ const selectionEnd = computed(() => {
     return convertMillisToDate(props.selectionEndDate);
 });
 
-function convertMillisToDate(milliseconds: number) {
-    var converted_year = new Date(milliseconds).getFullYear().toString();
-    var converted_month = (new Date(milliseconds).getMonth() + 1).toString();
-    var converted_day = new Date(milliseconds).getDate().toString();
-
-    if(converted_month.length == 1) {
-        converted_month = '0' + converted_month; 
-    }
-    if(converted_day.length == 1) {
-        converted_day = '0' + converted_day;
-    }
-    
-    return converted_year + '.' + converted_month + '.' + converted_day + '.';
-}
-
 function selectMenu() {
     router.push(`/meals/order/${props.menuId}`);
 }
@@ -39,15 +28,15 @@ function selectMenu() {
 <template>
     <div class="card" @click.prevent="selectMenu">
         <div>
-            <h1 class="card-name">Menu {{ menuId }}</h1>
+            <h1 class="card-name">{{ language.languageFile.meal.awailableMenus.menu.replace('$id', menuId) }}</h1>
         </div>
         <div class="card-body">
             <div>
-                <p class="data-type">Meal selection starts at:</p>
+                <p class="data-type">{{ language.languageFile.meal.awailableMenus.selectionStart }}:</p>
                 <p class="data-date">{{ selectionStart }}</p>
             </div>
             <div>
-                <p class="data-type">Meal selection ands at:</p>
+                <p class="data-type">{{ language.languageFile.meal.awailableMenus.selectionEnd }}:</p>
                 <p class="data-date">{{ selectionEnd }}</p>
             </div>
         </div>
@@ -67,6 +56,7 @@ function selectMenu() {
         border-radius: 10px;
         margin: 15px;
         padding: 10px;
+        transition: .5s;
     }
     .card-name {
         font-size: 18px;
@@ -90,6 +80,7 @@ function selectMenu() {
     }
 
     .card:hover {
-        background-color: whitesmoke;
+        background-color: rgb(240, 246, 255);
+        transition: .5s;
     }
 </style>

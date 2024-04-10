@@ -13,7 +13,8 @@ export const useMenuStore = defineStore({
         return {
             menus: [] as Menu[],
             menu: {} as Menu,
-            meal: [] as Meal[][]
+            mealsOnDays: [] as Meal[][],
+            daysOfMeals: [] as number[]
         }
     },
     actions: {
@@ -51,14 +52,7 @@ export const useMenuStore = defineStore({
 
             if(response.status === 200) {
                 this.menu = response.data;
-                this.meal = [];
-                this.meal.push(this.menu.mondayMeals);
-                this.meal.push(this.menu.tuesdayMeals);
-                this.meal.push(this.menu.wednesdayMeals);
-                this.meal.push(this.menu.thursdayMeals);
-                this.meal.push(this.menu.fridayMeals);
-                this.meal.push(this.menu.saturdayMeals);
-                this.meal.push(this.menu.sundayMeals);
+                this.orderMeals();
             }
         },
         async editMenu(menuId: number, selectionStartDate: Date, selectionEndDate: Date, availableFromDate: Date, availableToDate: Date, token: string) {
@@ -115,12 +109,14 @@ export const useMenuStore = defineStore({
                 router.push("/menu");
             }
         },
-        async createMeal(dayId: number, menuId: number, identification: string, description: string, token: string) {
+        async createMeal(menuId: number, identification: string, description: string, dateOfMeal: Date, token: string) {
+            var mealDate = dateOfMeal.getTime() + (dateOfMeal.getTimezoneOffset() * 60 * 1000);
+
             const response = await axios.post(MENU_API_URL + '/menu/meal/create', {
-                "dayId": dayId,
                 "menuId": menuId,
                 "identification": identification,
-                "description": description
+                "description": description,
+                "dateOfMeal": mealDate
             },
             {
                 headers: {
@@ -132,19 +128,11 @@ export const useMenuStore = defineStore({
             if(response.status === 201) {
                 useNotificationStore().sendCreatedNotification("Meal created", `New meal successfully added to "Menu #${menuId}"!`);
                 this.menu = response.data;
-                this.meal = [];
-                this.meal.push(this.menu.mondayMeals);
-                this.meal.push(this.menu.tuesdayMeals);
-                this.meal.push(this.menu.wednesdayMeals);
-                this.meal.push(this.menu.thursdayMeals);
-                this.meal.push(this.menu.fridayMeals);
-                this.meal.push(this.menu.saturdayMeals);
-                this.meal.push(this.menu.sundayMeals);
+                this.orderMeals();
             }
         },
-        async deleteMeal(dayId: number, mealId: number, menuId: number, token: string) {
+        async deleteMeal(mealId: number, menuId: number, token: string) {
             const response = await axios.post(MENU_API_URL + '/menu/meal/delete', {
-                "dayId": dayId,
                 "mealId": mealId,
                 "menuId": menuId
             },
@@ -158,14 +146,97 @@ export const useMenuStore = defineStore({
             if(response.status === 200) {
                 useNotificationStore().sendDeletedNotification("Meal deleted", `A meal has been deleted in "Menu #${menuId}"!`);
                 this.menu = response.data;
-                this.meal = [];
-                this.meal.push(this.menu.mondayMeals);
-                this.meal.push(this.menu.tuesdayMeals);
-                this.meal.push(this.menu.wednesdayMeals);
-                this.meal.push(this.menu.thursdayMeals);
-                this.meal.push(this.menu.fridayMeals);
-                this.meal.push(this.menu.saturdayMeals);
-                this.meal.push(this.menu.sundayMeals);
+                this.orderMeals();
+            }
+        },
+        getMenuAvailableFromDate() {
+            const date = new Date(this.menu.availableFrom);
+
+            var years = date.getFullYear().toString();
+            var months = (date.getMonth() + 1).toString();
+            var day = (date.getDate()).toString();
+
+            if(months.length == 1) {
+                months = '0' + months; 
+            }
+            if(day.length == 1) {
+                day = '0' + day;
+            }
+
+            return years + '-' + months + '-' + day
+        },
+        getMenuAvailableToDate() {
+            const date = new Date(this.menu.availableTo);
+
+            var years = date.getFullYear().toString();
+            var months = (date.getMonth() + 1).toString();
+            var day = (date.getDate()).toString();
+
+            if(months.length == 1) {
+                months = '0' + months; 
+            }
+            if(day.length == 1) {
+                day = '0' + day;
+            }
+
+            return years + '-' + months + '-' + day
+        },
+        getDateOfToday() {
+            const date = new Date();
+
+            var years = date.getFullYear().toString();
+            var months = (date.getMonth() + 1).toString();
+            var day = (date.getDate() + 1).toString();
+
+            if(months.length == 1) {
+                months = '0' + months; 
+            }
+            if(day.length == 1) {
+                day = '0' + day;
+            }
+
+            return years + '-' + months + '-' + day
+        },
+        orderMeals() {
+            var meals = this.menu.meals.sort((a, b) => {
+                if(a.dayOfMeal < b.dayOfMeal) {
+                    return -1;
+                }
+                if(a.dayOfMeal > b.dayOfMeal) {
+                    return 1;
+                }
+                return 0;
+            });
+            this.daysOfMeals = [];
+            if(meals.length > 0) {
+                var firstDay = meals[0].dayOfMeal;
+                this.mealsOnDays = [[]];
+                this.daysOfMeals.push(firstDay);
+                let j = 0;
+                for(var i = 0; i < meals.length; i++) {
+                    if(firstDay == meals[i].dayOfMeal) {
+                        this.mealsOnDays[j].push(meals[i]);
+                    }
+                    else {
+                        j++;
+                        this.mealsOnDays.push([] as Meal[]);
+                        this.mealsOnDays[j].push(meals[i])
+                        firstDay = meals[i].dayOfMeal;
+                        this.daysOfMeals.push(firstDay);
+                    }
+                }
+
+                for(var i = 0; i < this.mealsOnDays.length; i++) {
+                    this.mealsOnDays[i] = this.mealsOnDays[i].sort((a, b) => {
+                        if(a.identification < b.identification) {
+                            return -1;
+                        }
+                        if(a.identification > b.identification) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }
             }
         }
     }

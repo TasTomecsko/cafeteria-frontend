@@ -2,19 +2,20 @@
 import HeadBar from '@/components/HeadBar.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useMealStore } from '@/stores/mealStore';
+import { useLanguageStore } from '@/stores/languageStore';
 
 const meal = useMealStore();
 const auth = useAuthStore();
+const language = useLanguageStore();
 
 meal.getMenuToSelect(auth.token);
-
 </script>
 
 <template>
     <HeadBar/>
     <div class="wrapper">
         <div class="user-view-header">
-            <h1 class="page-title">Menu</h1>
+            <h1 class="page-title">{{ language.languageFile.meal.meal }}</h1>
         </div>
         <div class="page-content">
             <RouterView/>

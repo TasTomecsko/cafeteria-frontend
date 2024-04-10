@@ -1,0 +1,156 @@
+{
+    "login": {
+        "login": "Login",
+        "email": {
+            "label": "Email",
+            "example": "example@email.xyz"
+        },
+        "password": {
+            "label": "Password",
+            "example": "Password"
+        },
+        "buttonText": "Login",
+        "errorMessages": {
+            "serverError": "Unable to connect to server",
+            "badCredentials": "Bad credentials"
+        }
+    },
+    "nav": {
+        "home": "Home",
+        "meals": "Meals",
+        "menus": "Menus",
+        "users": "Users"
+    },
+    "home": {
+        "home": "Home",
+        "userInformation": {
+            "title": "User details",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email address"
+        },
+        "userInformationUpdate": {
+            "title":"Update user details",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "oldPass": "Old password",
+            "newPass": "New password",
+            "editButton": "Edit",
+            "cancelButton": "Cancel"
+        }
+    },
+    "meal": {
+        "meal": "Meals",
+        "awailableMenus": {
+            "title": "Available menus",
+            "selectionStart": "Meal selection starts at",
+            "selectionEnd": "Meal selection ends at",
+            "menu": "Menu $id",
+            "mealButton": "Todays meal"
+        },
+        "mealSelection": {
+            "title": "Meals from Menu $id",
+            "day": "Meals for $day",
+            "placeOrder": "Place order",
+            "backButton": "Back"
+        },
+        "todaysMeal": {
+            "message": "You have not ordered any meal for this day!",
+            "backButton": "Back"
+        }
+    },
+    "menu": {
+        "menu": "Menus",
+        "menuList": {
+            "title": "Menu $id",
+            "addButton": "ADD",
+            "selectionStart": "Meal selection starts at",
+            "selectionEnd":"Meal selection ends at",
+            "availableStart": "Meals are available starting from",
+            "availableTo": "Meals are available to",
+            "inspectButton": "Inspect",
+            "deleteButton": "Delete",
+            "modal": {
+                "text": "Are you sure you want to delete Menu $id?",
+                "deleteButton": "Delete",
+                "cancelButton": "Cancel"
+            }
+        },
+        "create": {
+            "title": "Create Menu",
+            "selectionStart": "Meal selection starts at",
+            "selectionEnd": "Meal selection ends at",
+            "availableStart": "Meals are available starting from",
+            "availableTo": "Meals are available to",
+            "createButton": "Create Menu",
+            "cancelButton": "Cancel"
+        },
+        "inspect": {
+            "menuInfo": {
+                "title": "Menu $id Details",
+                "selectionStart": "Meal selection starts at",
+                "selectionEnd": "Meal selection ends at",
+                "availableStart": "Meals are available starting from",
+                "availableTo": "Meals are available to",
+                "orderButton": "Orders",
+                "editButton": "Edit"
+            },
+            "menuEdit": {
+                "title": "Edit Menu $id",
+                "selectionStart": "Meal selection starts at",
+                "selectionEnd": "Meal selection ends at",
+                "availableStart": "Meals are available starting from",
+                "availableTo": "Meals are available to",
+                "currentlySetTo": "Currently set to",
+                "editButton": "Edit Time Details"
+            },
+            "mealDetails": {
+                "title": "Meal Details",
+                "deleteButton": "Delete",
+                "modalDelete": {
+                    "text": "Are you sure you want to delete '$description'?",
+                    "deleteButton": "Delete",
+                    "cancelButton": "Cancel"
+                },
+                "modalCreate": {
+                    "text": "Add new Meal to Menu $id",
+                    "identification": "Identification",
+                    "description": "Description",
+                    "dayOfMeal": "Day of the meal",
+                    "createButton": "Create",
+                    "cancelButton": "Cancel"
+                }
+            },
+            "orders": {
+                "title": "Order Details",
+                "orderNumber": "No. of Orders",
+                "backButton": "Back"
+            },
+            "cancelButton": "Cancel",
+            "backButton": "Back"
+        }
+    },
+    "users": {
+        "users": "Users",
+        "addButton": "ADD",
+        "deleteButton": "Delete",
+        "cancelButton": "Cancel",
+        "deleteMessage": "Are you sure you want to delete '$first $last'?",
+        "email": "Email address",
+        "role": "Role",
+        "createUser": {
+            "title": "Add new User",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email address",
+            "password": "Password",
+            "role": "Role",
+            "roles": {
+                "user": "USER",
+                "admin": "ADMIN"
+            },
+            "createButton": "Create",
+            "cancelButton": "Cancel"
+        }
+    }
+}
