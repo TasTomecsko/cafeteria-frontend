@@ -152,5 +152,49 @@
             "createButton": "Create",
             "cancelButton": "Cancel"
         }
+    },
+    "errors": {
+        "server": {
+            "title": "Server error",
+            "message": "Something went wrong, please try again later!"
+        }
+    },
+    "notifications": {
+        "order": {
+            "title": "Order created",
+            "message": "You have created an order, it will be available from $year $month $day!"
+        },
+        "menuDelete": {
+            "title": "Menu deleted",
+            "message": "Successfully deleted a menu with the id of '$id'!"
+        },
+        "menuModify": {
+            "title": "Menu modifyed",
+            "message": "Menu with the id of '$id' has been successfully modifyed!"
+        },
+        "menuCreate": {
+            "title": "Menu created",
+            "message": "New menu created successfully!"
+        },
+        "mealCreate": {
+            "title": "Meal created",
+            "message": "New meal successfully added to 'Menu #$id'!"
+        },
+        "mealDelete": {
+            "title": "Meal deleted",
+            "message": "A meal has been deleted from 'Menu #$id'!"
+        },
+        "userCreate": {
+            "title": "New User Added",
+            "message": "A new user named $first $last added!"
+        },
+        "userDelete": {
+            "title": "User Deleted",
+            "message": "User named $first $last has been deleted!"
+        },
+        "userInfoUpdate": {
+            "title": "User information updated",
+            "message": "Successfully updated user information!"
+        }
     }
 }

@@ -152,5 +152,49 @@
             "createButton": "Erstellen",
             "cancelButton": "Stornieren"
         }
+    },
+    "errors": {
+        "server": {
+            "title": "Serverfehler",
+            "message": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal"
+        }
+    },
+    "notifications": {
+        "order": {
+            "title": "Bestellung erstellt",
+            "message": "Sie haben eine Bestellung erstellt, diese ist ab dem $day $month $year verfügbar!"
+        },
+        "menuDelete": {
+            "title": "Menü gelöscht",
+            "message": "Ein Menü mit der ID '$id' wurde erfolgreich gelöscht!"
+        },
+        "menuModify": {
+            "title": "Menü geändert",
+            "message": "Das Menü mit der ID '$id' wurde erfolgreich geändert!"
+        },
+        "menuCreate": {
+            "title": "Menü erstellt",
+            "message": "Neues Menü erfolgreich erstellt!"
+        },
+        "mealCreate": {
+            "title": "Mahlzeit erstellt",
+            "message": "Neue Mahlzeit erfolgreich zu 'Menü Nr. $id' hinzugefügt!"
+        },
+        "mealDelete": {
+            "title": "Mahlzeit gelöscht",
+            "message": "Eine Mahlzeit wurde aus 'Menü Nr. $id' gelöscht!"
+        },
+        "userCreate": {
+            "title": "Neuer Benutzer hinzugefügt",
+            "message": "Ein neuer Benutzer namens $first $last wurde hinzugefügt!"
+        },
+        "userDelete": {
+            "title": "Benutzer gelöscht",
+            "message": "Benutzer namens $first $last wurde gelöscht!"
+        },
+        "userInfoUpdate": {
+            "title": "Benutzerinformationen aktualisiert",
+            "message": "Benutzerinformationen erfolgreich aktualisiert!"
+        }
     }
 }

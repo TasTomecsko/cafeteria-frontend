@@ -6,6 +6,7 @@ import RefreshModal from '@/components/RefreshModal.vue';
 import { useNotificationStore } from '@/stores/notificationsStore';
 import { useLanguageStore } from '@/stores/languageStore';
 import NavbarDropdownButton from '@/assets/NavbarDropdownButton.vue';
+import NavbarButton from '@/assets/NavbarButton.vue';
 import { navIconType } from '@/enums/navIconTypes';
 
 const auth = useAuthStore();
@@ -15,6 +16,7 @@ const role = ref();
 const showModal = computed(() => auth.showModal);
 const note = useNotificationStore();
 const isNavOpen = ref(false);
+const isSmallScreen = ref(false);
 
 function logout() {
     userInfo.clearUserInfoStore();
@@ -28,17 +30,25 @@ function navControl() {
         isNavOpen.value = true
 }
 
+function setScreenSize() {
+    if(window.innerWidth < 1200)
+        isSmallScreen.value = true;
+    else 
+        isSmallScreen.value = false;
+}
+
 onMounted(async () => {
+    window.addEventListener("resize", setScreenSize)
     auth.timer();
     await userInfo.getUserInfo(auth.token).catch(function (error) {
         if(error.response.status === 403) {
             auth.showModal = true;
         }
         else {
-            note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+            note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
         }
     });
-    role.value = userInfo.role
+    role.value = userInfo.role;
 });
 </script>
 
@@ -46,8 +56,14 @@ onMounted(async () => {
     <header class="header">
         <menu class="menu">
             <div class="head-element-left">
-                <div class="centerMenu">
+                <div class="centerMenu" v-if="isSmallScreen">
                     <button @click.prevent="navControl" class="openMenuButton" :class="{'openMenuButtonActive': isNavOpen === true}"></button>
+                </div>
+                <div class="inlineDisplay" v-else>
+                    <NavbarButton :nevigate-to="'/'" :button-text="language.languageFile.nav.home" :nav-menu-icon-type="navIconType.HOME"/>
+                    <NavbarButton :nevigate-to="'/meals'" :button-text="language.languageFile.nav.meals" :nav-menu-icon-type="navIconType.MEALS"/>
+                    <NavbarButton :nevigate-to="'/menu'" :button-text="language.languageFile.nav.menus" :nav-menu-icon-type="navIconType.MENUS" v-if="role === 'ADMIN'"/>
+                    <NavbarButton :nevigate-to="'/users'" :button-text="language.languageFile.nav.users" :nav-menu-icon-type="navIconType.USERS" v-if="role === 'ADMIN'"/>
                 </div>
             </div>
             <div class="head-element-right">
@@ -57,7 +73,7 @@ onMounted(async () => {
             </div>
         </menu>
     </header>
-    <div v-if="isNavOpen" class="navigation" :class="{'navigation-smaller': role === 'USER'}">
+    <div v-if="isNavOpen && isSmallScreen" class="navigation" :class="{'navigation-smaller': role === 'USER'}">
         <NavbarDropdownButton :nevigate-to="'/'" :button-text="language.languageFile.nav.home" :nav-menu-icon-type="navIconType.HOME"/>
         <NavbarDropdownButton :nevigate-to="'/meals'" :button-text="language.languageFile.nav.meals" :nav-menu-icon-type="navIconType.MEALS"/>
         <NavbarDropdownButton :nevigate-to="'/menu'" :button-text="language.languageFile.nav.menus" :nav-menu-icon-type="navIconType.MENUS" v-if="role === 'ADMIN'"/>
@@ -104,6 +120,11 @@ onMounted(async () => {
     float: right;
     height: 55px;
     width: 150px;
+}
+.inlineDisplay {
+    display: flex;
+    justify-content: space-between;
+    margin: calc((55px - 41px) / 2) 0;
 }
 .openMenuButton {
     background-image: url('@/assets/images/NavBar/NavBarMenu.svg');

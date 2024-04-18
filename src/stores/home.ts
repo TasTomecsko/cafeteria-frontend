@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useNotificationStore } from "./notificationsStore";
+import { useLanguageStore } from "./languageStore";
 import type { UserData } from "@/interfaces/userData";
 import type { UserUpdate } from "@/interfaces/userUpdate";
 
@@ -46,7 +47,10 @@ export const useHomeStore = defineStore({
 
             if(response.status === 200) {
                 this.userData = {firstName: response.data.firstName, lastName:response.data.lastName, email:response.data.email};
-                useNotificationStore().sendInfoNotification('User information updated', 'Successfully updated user information');
+                useNotificationStore().sendInfoNotification(
+                    useLanguageStore().languageFile.notifications.userInfoUpdate.title, 
+                    useLanguageStore().languageFile.notifications.userInfoUpdate.message
+                );
             }
         }
     }

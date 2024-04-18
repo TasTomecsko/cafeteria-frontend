@@ -23,7 +23,7 @@ onMounted(async() => {
             errorConnect()
         }
         else {
-            note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+            note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
         }
     });
     menuData.value = menu.menus;

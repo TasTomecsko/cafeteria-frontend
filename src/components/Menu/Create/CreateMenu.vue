@@ -32,13 +32,13 @@ async function onSubmit() {
                 errorConnect()
             }
             else if(error.response.status === 400) {
-                note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+                note.sendErrorNotificationLocalized(error.response.data, language.languageId);
             }
             else if(error.response.status === 409) {
-                note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+                note.sendErrorNotificationLocalized(error.response.data, language.languageId);
             }
             else {
-                note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+                note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
             }
         });
     
@@ -81,7 +81,7 @@ const min = menu.getDateOfToday();
                     <input type="date" id="availabilityEnd" v-model="timeDetails.availableTo" :min="min" required class="date-picker">
                 </div>
             </div>
-            <Button @clicked="onSubmit" :text="language.languageFile.menu.create.createButton" :assigned-type="buttonType.GREEN" :is-disabled="disable()"/>
+            <Button @clicked="onSubmit" :text="language.languageFile.menu.create.createButton" :assigned-type="buttonType.GREEN" :is-disabled="disable()" class="create-button"/>
         </form>
         <Button @clicked="onBackClick" :text="language.languageFile.menu.create.cancelButton" :assigned-type="buttonType.RED"/>
     </div>
@@ -118,6 +118,10 @@ form {
     margin-bottom: 15px;
     width: 200px;
     height: 20px;
+}
+.create-button {
+    min-width: 120px;
+    width: fit-content;
 }
 
 @media screen and (min-width: 700px) {

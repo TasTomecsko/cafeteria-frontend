@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useNotificationStore } from "./notificationsStore";
+import { useLanguageStore } from "./languageStore";
 import router from "@/router";
 
 const USERS_API_URL = "http://localhost:8080/api/v1/admin";
@@ -42,7 +43,10 @@ export const useUsersStore = defineStore({
             });
 
             if(response.status === 201) {
-                useNotificationStore().sendCreatedNotification('New User Added', `User named ${firstName} ${lastName} added`);
+                useNotificationStore().sendCreatedNotification(
+                    useLanguageStore().languageFile.notifications.userCreate.title, 
+                    useLanguageStore().languageFile.notifications.userCreate.message.replace("$first", firstName).replace("$last", lastName)
+                );
                 router.push('/users');
             }
         },
@@ -56,7 +60,10 @@ export const useUsersStore = defineStore({
             });
 
             if(response.status === 200) {
-                useNotificationStore().sendDeletedNotification('User Deleted', `User named ${firstName} ${lastName} deleted`);
+                useNotificationStore().sendDeletedNotification(
+                    useLanguageStore().languageFile.notifications.userDelete.title, 
+                    useLanguageStore().languageFile.notifications.userDelete.message.replace("$first", firstName).replace("$last", lastName)
+                );
             }
         }
     }

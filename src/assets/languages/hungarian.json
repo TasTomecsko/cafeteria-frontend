@@ -152,5 +152,49 @@
             "createButton": "Létrehoz",
             "cancelButton": "Mégse"
         }
+    },
+    "errors": {
+        "server": {
+            "title": "Szerverhiba",
+            "message": "Valami hiba történt, kérjük próbáld meg később"
+        }
+    },
+    "notifications": {
+        "order": {
+            "title": "Rendelés leadva",
+            "message": "Létrehozott egy rendelést, ami $year $month $day-től lesz elérhető!"
+        },
+        "menuDelete": {
+            "title": "Menü törölve",
+            "message": "Sikeresen törölte a '$id' azonosítójú menüt!"
+        },
+        "menuModify": {
+            "title": "Menü módosítva",
+            "message": "Sikeresen módosította a '$id' azonosítójú menüt!"
+        },
+        "menuCreate": {
+            "title": "Menü létrehozva",
+            "message": "Sikeresen létrehozott egy új menüt!"
+        },
+        "mealCreate": {
+            "title": "Étel létrehozva",
+            "message": "Az új étel sikeresen hozzá lett adva a '$id' azonosítójú menühöz!"
+        },
+        "mealDelete": {
+            "title": "Étel törölve",
+            "message": "Törölte az ételt a '$id' azonosítójú menüből!"
+        },
+        "userCreate": {
+            "title": "Új felhasználó hozzáadva",
+            "message": "$last $first sikeresen hozzáadva!"
+        },
+        "userDelete": {
+            "title": "Felhasználó törölve",
+            "message": "$last $first sikeresen törölve!"
+        },
+        "userInfoUpdate": {
+            "title": "Felhasználói adatok frissítve",
+            "message": "Sikeresen frissítette a felhasználói adatokat!"
+        }
     }
 }

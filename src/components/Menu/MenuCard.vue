@@ -57,11 +57,11 @@ async function deleteMenu() {
             ableToDelete = false;
         }
         else if(error.response.status === 400) {
-            note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+            note.sendErrorNotificationLocalized(error.response.data, language.languageId);
             ableToDelete  = false;
         }
         else if(error.response.status === 500) {
-            note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+            note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
         }
     });
 

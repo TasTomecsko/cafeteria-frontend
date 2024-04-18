@@ -31,10 +31,10 @@ onMounted(async() => {
             errorConnect()
         }
         else if(error.response.status === 400) {
-            note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+            note.sendErrorNotificationLocalized(error.response.data, language.languageId);
         }
         else {
-            note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+            note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
         }
     });
 });
@@ -49,10 +49,10 @@ async function onSubmit() {
                 errorConnect()
             }
             else if(error.response.status === 400) {
-                note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+                note.sendErrorNotificationLocalized(error.response.data, language.languageId);
             }
             else {
-                note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+                note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
             }
         });
 }

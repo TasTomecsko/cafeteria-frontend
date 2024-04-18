@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useNotificationStore } from "./notificationsStore";
+import { useLanguageStore } from "./languageStore";
 import router from "@/router";
 import type { Menu } from "@/interfaces/menu";
 import type { Meal } from "@/interfaces/meal";
@@ -60,10 +61,16 @@ export const useMealStore = defineStore({
             });
 
             if(response.status === 201) {
-                useNotificationStore().sendCreatedNotification('Order created', `You have created an order, it will be available from 
-                ${new Date(this.menuToSelect.availableFrom).getFullYear()} 
-                ${(new Date(this.menuToSelect.availableFrom).getMonth() + 1).toString().length > 1 ? (new Date(this.menuToSelect.availableFrom).getMonth() + 1) : '0' + (new Date(this.menuToSelect.availableFrom).getMonth() + 1)} 
-                ${new Date(this.menuToSelect.availableFrom).getDate().toString().length > 1 ? new Date(this.menuToSelect.availableFrom).getDate() : '0' + new Date(this.menuToSelect.availableFrom).getDate()}`);
+                var year = new Date(this.menuToSelect.availableFrom).getFullYear();
+                var month = (new Date(this.menuToSelect.availableFrom).getMonth() + 1).toString().length > 1 ?
+                 (new Date(this.menuToSelect.availableFrom).getMonth() + 1) : '0' + (new Date(this.menuToSelect.availableFrom).getMonth() + 1);
+                var day = new Date(this.menuToSelect.availableFrom).getDate().toString().length > 1 ?
+                 new Date(this.menuToSelect.availableFrom).getDate() : '0' + new Date(this.menuToSelect.availableFrom).getDate();
+
+                useNotificationStore().sendCreatedNotification(
+                    useLanguageStore().languageFile.notifications.order.title, 
+                    useLanguageStore().languageFile.notifications.order.message.replace("$year", year).replace("$month", month).replace("$day", day)
+                );
                 router.push('/meals');
             }
         },

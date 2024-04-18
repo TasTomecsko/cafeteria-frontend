@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useMenuStore } from '@/stores/menuStore';
 import { useNotificationStore } from '@/stores/notificationsStore';
@@ -37,11 +37,11 @@ async function onSubmit() {
                 deleteDetails = false;
             }
             else if(error.response.status === 400 || error.response.status === 404 || error.response.status === 409) {
-                note.sendErrorNotification(error.response.data.title, error.response.data.detail);
+                note.sendErrorNotificationLocalized(error.response.data, language.languageId);
                 deleteDetails = false;
             }
             else {
-                note.sendDeletedNotification('Server Error', 'Something went wrong, please try again later');
+                note.sendDeletedNotification(language.languageFile.errors.server.title, language.languageFile.errors.server.message);
                 deleteDetails = false;
             }
         });
@@ -131,7 +131,8 @@ form {
     font-size: 16px;
 }
 .edit-button {
-    width: 200px;
+    min-width: 120px;
+    width: fit-content;
 }
 
 @media screen and (min-width: 700px) {

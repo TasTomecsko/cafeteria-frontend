@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useNotificationStore } from "./notificationsStore";
+import { useLanguageStore } from "./languageStore";
 import router from "@/router";
 import type { Menu } from "@/interfaces/menu";
 import type { Meal } from "@/interfaces/meal";
@@ -39,7 +40,10 @@ export const useMenuStore = defineStore({
             });
 
             if(response.status === 200) {
-                useNotificationStore().sendDeletedNotification("Menu deleted", `Successfully deleted a menu with the id of ${menuId}!`);
+                useNotificationStore().sendDeletedNotification(
+                    useLanguageStore().languageFile.notifications.menuDelete.title, 
+                    useLanguageStore().languageFile.notifications.menuDelete.message.replace("$id", menuId)
+                );
             }
         },
         async getMenuById(menuId: number, token: string) {
@@ -79,7 +83,10 @@ export const useMenuStore = defineStore({
             });
 
             if(response.status === 200) {
-                useNotificationStore().sendInfoNotification("Menu modifyed", `Menu with the id of ${menuId} has been successfully modifyed!`);
+                useNotificationStore().sendInfoNotification(
+                    useLanguageStore().languageFile.notifications.menuModify.title, 
+                    useLanguageStore().languageFile.notifications.menuModify.message.replace("$id", menuId)
+                );
                 router.push('/menu');
             }
         },
@@ -105,7 +112,10 @@ export const useMenuStore = defineStore({
             });
 
             if(response.status === 201) {
-                useNotificationStore().sendCreatedNotification("Menu created", "New menu created successfully!");
+                useNotificationStore().sendCreatedNotification(
+                    useLanguageStore().languageFile.notifications.menuCreate.title, 
+                    useLanguageStore().languageFile.notifications.menuCreate.message
+                );
                 router.push("/menu");
             }
         },
@@ -126,7 +136,10 @@ export const useMenuStore = defineStore({
             });
 
             if(response.status === 201) {
-                useNotificationStore().sendCreatedNotification("Meal created", `New meal successfully added to "Menu #${menuId}"!`);
+                useNotificationStore().sendCreatedNotification(
+                    useLanguageStore().languageFile.notifications.mealCreate.title, 
+                    useLanguageStore().languageFile.notifications.mealCreate.message.replace("$id", menuId)
+                );
                 this.menu = response.data;
                 this.orderMeals();
             }
@@ -144,7 +157,10 @@ export const useMenuStore = defineStore({
             });
 
             if(response.status === 200) {
-                useNotificationStore().sendDeletedNotification("Meal deleted", `A meal has been deleted in "Menu #${menuId}"!`);
+                useNotificationStore().sendDeletedNotification(
+                    useLanguageStore().languageFile.notifications.mealDelete.title, 
+                    useLanguageStore().languageFile.notifications.mealDelete.message.replace("$id", menuId)
+                );
                 this.menu = response.data;
                 this.orderMeals();
             }
